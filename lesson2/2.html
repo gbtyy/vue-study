@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Vue 测试实例 - 菜鸟教程(runoob.com)</title>
+    <script src="js/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <p>{{ a }}</p>
+        <!-- 这里的 `foo` 不会更新！ -->
+        <button v-on:click="a = 5">Change it</button>
+    </div>
+    <script>
+        var data = {
+            a: 1
+        }
+        var vm = new Vue({
+            el: '#app',
+            data: data
+        })
+        console.info(vm.a == data.a)
+        vm.a = 2
+        console.info(data.a)
+        data.a = 3
+        console.info(vm.a)
+        console.info(vm.$data === data)
+        console.info(vm.$el === document.getElementById('app')) // => true
+        // $watch 是一个实例方法
+        vm.$watch('a', function (newValue, oldValue) {
+            // 这个回调将在 `vm.a` 改变后调用
+            console.info("变量a被改变了由---" + oldValue + "----变为了--" + newValue);
+        })
+        new Vue({
+            data: {
+                a: 1
+            },
+            created: function () {
+                // `this` 指向 vm 实例
+                console.log('a is: ' + this.a)
+            }
+        })
+    </script>
+</body>
+
+</html>
