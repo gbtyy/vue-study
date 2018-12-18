@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Vue 测试实例 - 菜鸟教程(runoob.com)</title>
+    <script src="js/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <div class="static" v-bind:class="{ active: isActive, 'text-danger': hasError }">
+            1</div>
+        <div v-bind:class="classObject">2</div>
+        <div v-bind:class="classObjectC">3</div>
+        <div v-bind:class="[activeClass, errorClass]">4</div>
+        <div v-bind:class="[isActive ? activeClass : '', errorClass]">5</div>
+        <div v-bind:class="[{ active: isActive }, errorClass]">6</div>
+        <my-component class="baz boo"></my-component>
+        <my-component v-bind:class="{ active: isActive }"></my-component>
+        <div v-bind:style="{ color: activeColor, fontSize: fontSize + 'px' }">a1212</div>
+        <div v-bind:style="styleObject">fafda</div>
+        <div v-bind:style="[baseStyles, overridingStyles]"></div>
+        <div :style="{ display: ['-webkit-box', '-ms-flexbox', 'flex'] }"></div>
+    </div>
+    <script>
+        Vue.component('my-component', {
+            template: '<p class="foo bar">Hi</p>'
+        })
+        var data = {
+            isActive: true,
+            hasError: true,
+            error: false,
+            classObject: {
+                active: true,
+                'text-danger': false
+            },
+            activeClass: 'active',
+            errorClass: 'text-danger',
+            activeColor: 'red',
+            fontSize: 30,
+            styleObject: {
+                color: 'red',
+                fontSize: '13px'
+            }
+        }
+        var vm = new Vue({
+            el: '#app',
+            data: data,
+            computed: {
+                classObjectC: function () {
+                    return {
+                        active: this.isActive && !this.error,
+                        'text-danger': this.error && this.error.type === 'fatal'
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

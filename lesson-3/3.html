@@ -11,10 +11,22 @@
     <div id="app">
         <p>Using mustaches: {{ rawHtml }}</p>
         <p>Using v-html directive: <span v-html="rawHtml"></span></p>
+        <button v-bind:disabled="isButtonDisabled">Button</button>
+        <p v-if="seen">现在你看到我了</p>
+        <p><a v-bind:href="url">...</a></p>
+        <p><a :href="url">缩写...</a></p>
+        <p<a v-on:click="doSomething">触发点击事件</a></p>
+        <p<a @click="doSomething">缩写触发点击事件</a></p>
     </div>
     <script>
         var data = {
-            rawHtml: "<span style='color:red'>This should be red.</span>"
+            rawHtml: "<span style='color:red'>This should be red.</span>",
+            isButtonDisabled:true,
+            seen:true,
+            url:'http://www.baidu.com',
+            doSomething:function(){
+                alert('触发了点击');
+            }
         }
         var vm = new Vue({
             el: '#app',
