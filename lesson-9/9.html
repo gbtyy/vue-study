@@ -66,6 +66,14 @@
             </select>
             <span>Selected: {{ selected2 }}</span>
         </div>
+        <div>
+            <input type="checkbox" v-model="toggle" true-value="yes" false-value="no">
+            <span>Selected: {{ toggle }}</span>
+        </div>
+        <div>
+            <input type="radio" v-model="pick" v-bind:value="a">
+            <span>Selected: {{ pick }}</span>
+        </div>
     </div>
 
     <script>
@@ -76,6 +84,7 @@
             picked: '',
             selected: '',
             multiple_selected: [],
+            toggle:'no',
             options: [{
                     text: 'One',
                     value: 'A'
@@ -89,7 +98,9 @@
                     value: 'C'
                 }
             ],
-            selected2: ''
+            selected2: '',
+            pick:'',
+            a:'a'
 
         }
         var vm = new Vue({
