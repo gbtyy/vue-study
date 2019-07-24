@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Vue 测试实例 - 菜鸟教程(runoob.com)</title>
+    <script src="js/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <div id="components-demo">
+            <button-counter></button-counter>
+            <button-counter></button-counter>
+            <button-counter></button-counter>
+        </div>
+        <div>
+            <blog-post title="My journey with Vue"></blog-post>
+            <blog-post title="Blogging with Vue"></blog-post>
+            <blog-post title="Why Vue is so fun"></blog-post>
+        </div>
+        <div>
+            <blog-post2 v-for="(post, index) in posts" :key="index" v-bind:post="post">
+            </blog-post2>
+        </div>
+        <div :style="{ fontSize: postFontSize + 'em' }">
+            <blog-post3 v-for="post in posts" v-bind:key="post.id" v-on:enlarge-text="postFontSize += 0.1"
+                v-bind:post="post"></blog-post3>
+        </div>
+
+        <div :style="{ fontSize: postFontSize + 'em' }">
+            <blog-post4 v-for="post in posts" v-bind:key="post.id" v-on:enlarge-text="postFontSize += $event"
+                v-bind:post="post"></blog-post4>
+        </div>
+        <div>
+            <custom-input v-model="searchText"></custom-input>
+            <span>searchText:{{searchText}}</span>
+        </div>
+        <div>
+            <alert-box>
+                Something bad happened.
+              </alert-box>
+        </div>
+    </div>
+
+    <script>
+        var data = {
+            posts: [{
+                    id: 1,
+                    title: 'My journey with Vue',
+                    content: 'content1'
+                },
+                {
+                    id: 2,
+                    title: 'Blogging with Vue',
+                    content: 'content2'
+                },
+                {
+                    id: 3,
+                    title: 'Why Vue is so fun',
+                    content: 'content3'
+                }
+            ],
+            postFontSize: 1,
+            searchText: ''
+        }
+        // 定义一个名为 button-counter 的新组件
+        Vue.component('button-counter', {
+            data: function () {
+                return {
+                    count: 0
+                }
+            },
+            template: '<button v-on:click="count++">You clicked me {{ count }} times.</button>'
+        })
+        Vue.component('blog-post', {
+            props: ['title'],
+            template: '<h3>{{ title }}</h3>'
+        })
+
+        Vue.component('blog-post2', {
+            props: ['post'],
+            template: `
+                <div class="blog-post">
+                    <h3>{{ post.title }}</h3> 
+                    <div v-html="post.content"></div> 
+                </div> `
+        })
+        Vue.component('blog-post3', {
+            props: ['post'],
+            template: `
+            <div class="blog-post">
+                <h3>{{ post.title }}</h3>
+                <button v-on:click="$emit('enlarge-text')">
+                    Enlarge text
+                </button>
+                <div v-html="post.content"></div>
+            </div> `
+        })
+
+        Vue.component('blog-post4', {
+            props: ['post'],
+            template: `
+            <div class="blog-post">
+                <h3>{{ post.title }}</h3>
+                <button v-on:click="$emit('enlarge-text',0.1)">
+                    Enlarge text
+                </button>
+                <div v-html="post.content"></div>
+            </div> `
+        })
+        Vue.component('custom-input', {
+            props: ['value'],
+            template: `
+                <input
+                v-bind:value="value"
+                v-on:input="$emit('input', $event.target.value)"
+                >
+            `
+        })
+        Vue.component('alert-box', {
+            template: `
+            <div class="demo-alert-box">
+                <strong>Error!</strong>
+                <slot></slot>
+            </div>
+                `
+        })
+        var vm = new Vue({
+            el: '#app',
+            data: data,
+            methods: {}
+        })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Vue 测试实例 - 菜鸟教程(runoob.com)</title>
+    <script src="js/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <!-- 在 HTML 中是 kebab-case 的 -->
+        <div>
+            <blog-post post-title="hello!"></blog-post>
+        </div>
+        <div>
+            <base-checkbox v-model="lovingVue" v-bind:value="v1"></base-checkbox>
+            <span>checked:{{lovingVue}}-{{ v1 }}</span>
+        </div>
+        <div>
+            <navigation-link url="/profile">
+                Your Profile
+            </navigation-link>
+        </div>
+        <div>
+            <navigation-link url="/profile">
+                <!-- 添加一个 Font Awesome 图标 -->
+                <span class="fa fa-user"></span>
+                Your Profile
+            </navigation-link>
+        </div>
+        <div>
+            <navigation-link url="/profile">
+                Logged in as {{ user.name }}
+            </navigation-link>
+        </div>
+        <div>
+            <span>
+                <submit-button></submit-button>
+            </span>
+            <span>
+                <submit-button>save</submit-button>
+            </span>
+        </div>
+        <div>
+            <base-layout>
+                <template v-slot:header>
+                    <h1>Here might be a page title</h1>
+                </template>
+
+                <p>A paragraph for the main content.</p>
+                <p>And another one.</p>
+
+                <template v-slot:footer>
+                    <p>Here's some contact info</p>
+                </template>
+            </base-layout>
+        </div>
+        <div>
+            <current-user :user="user">
+                <template v-slot:default="slotProps">
+                    {{ slotProps.user.firstName }}
+                </template>
+            </current-user>
+        </div>
+        <div>
+            <base-layout>
+                <template #header>
+                    <h1>Here might be a page title</h1>
+                </template>
+
+                <p>A paragraph for the main content.</p>
+                <p>And another one.</p>
+
+                <template #footer>
+                    <p>Here's some contact info</p>
+                </template>
+            </base-layout>
+        </div>
+        <div>
+            <todo-list v-bind:todos="todos">
+                <template v-slot:todo="{ todo }">
+                    <span v-if="todo.isComplete">✓</span>
+                    {{ todo.text }}
+                </template>
+            </todo-list>
+        </div>
+    </div>
+
+    <script>
+        var data = {
+            lovingVue: true,
+            v1: '足球',
+            user: {
+                name: 'bober',
+                lastName: 'Amari',
+                firstName: 'Ana'
+            },
+            todos:[
+                {
+                    id:'1',
+                    text:'test1',
+                    isComplete:true
+                },
+                {
+                    id:'2',
+                    text:'test2',
+                    isComplete:true
+                },
+                {
+                    id:'3',
+                    text:'test3',
+                    isComplete:false
+                }
+            ]
+        }
+
+        Vue.component('blog-post', {
+            props: ["postTitle"],
+            template: "<h3>{{ postTitle }}</h3>"
+        })
+
+        Vue.component('base-checkbox', {
+            model: {
+                prop: 'checked',
+                event: 'change'
+            },
+            props: {
+                checked: Boolean
+            },
+            template: `
+                <input
+                type="checkbox"
+                v-bind:checked="checked"
+                v-on:change="$emit('change', $event.target.checked)"
+                >
+            `
+        })
+
+        Vue.component('navigation-link', {
+            props: {
+                url: ''
+            },
+            template: `
+                <a
+                    v-bind:href="url"
+                    class="nav-link"
+                    >
+                    <slot></slot>
+                </a>
+            `
+        })
+
+        Vue.component('submit-button', {
+            template: `
+            <button type="submit">
+                <slot>Submit</slot>
+            </button>
+            `
+        })
+
+        Vue.component('base-layout', {
+            template: `
+            <div class="container">
+                <header>
+                    <slot name="header"></slot>
+                </header>
+                <main>
+                    <slot></slot>
+                </main>
+                <footer>
+                    <slot name="footer"></slot>
+                </footer>
+            </div>
+            `
+        })
+        Vue.component('current-user', {
+            props: {
+                user: ''
+            },
+            template: `
+            <span>
+                <slot v-bind:user="user">
+                    {{ user.lastName }}
+                </slot>
+            </span>
+            `
+        })
+        Vue.component('todo-list', {
+            props: ['todos'],
+            template: `
+            <ul>
+                <li
+                    v-for="todo in todos"
+                    v-bind:key="todo.id"
+                >
+                    <!--
+                    我们为每个 todo 准备了一个插槽，
+                    将 'todo' 对象作为一个插槽的 prop 传入。
+                    -->
+                    <slot name="todo" v-bind:todo="todo">
+                    <!-- 后备内容 -->
+                    {{ todo.text }}
+                    </slot>
+                </li>
+                </ul>
+            `
+        })
+
+        var vm = new Vue({
+            el: '#app',
+            data: data,
+            methods: {}
+        })
+    </script>
+</body>
+
+</html>

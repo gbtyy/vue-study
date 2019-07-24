@@ -74,6 +74,25 @@
             <input type="radio" v-model="pick" v-bind:value="a">
             <span>Selected: {{ pick }}</span>
         </div>
+        <div>
+            <select v-model="selected3">
+                <!-- 内联对象字面量 -->
+              <option v-bind:value="{ number: 123 }">123</option>
+            </select>
+            <span>Selected: {{ selected3 }}</span>
+        </div>
+        <div>
+            <input v-model.lazy="msg" >
+            <span>input:{{msg}}</span>
+        </div>
+        <div>
+            <input v-model.number="age" type="number">
+            <span>input:{{age}}</span>
+        </div>
+        <div>
+            <input v-model.trim="msgTrm" >
+            <span>input:{{msgTrm}}</span>
+        </div>
     </div>
 
     <script>
@@ -100,7 +119,11 @@
             ],
             selected2: '',
             pick:'',
-            a:'a'
+            a:'a',
+            selected3:'',
+            msg:'',
+            age:'',
+            msgTrm:''
 
         }
         var vm = new Vue({
